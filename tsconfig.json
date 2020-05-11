@@ -14,7 +14,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng-m-datatable": [
+        "dist/ng-m-datatable/ng-m-datatable",
+        "dist/ng-m-datatable"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

@@ -1,0 +1,87 @@
+<div class="mat-elevation-z8">
+  <div class="container">
+    <div class="f-left">
+      <h2>{{ tittle }}</h2>
+    </div>
+    <form [formGroup]="searchForm" class="" class="f-right">
+      <mat-form-field class="example-full-width">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>Search</mat-label>
+        <input formControlName="search" matInput placeholder="..." value="" />
+      </mat-form-field>
+    </form>
+  </div>
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <ng-container *ngFor="let c of columns">
+      <ng-container [matColumnDef]="c.id">
+        <th
+          [ngClass]="{ 't-right': c.type == 'action' }"
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+        >
+          {{ c.text }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="c.type == 'text' || !c.type">
+            {{ row[c.id] }}</ng-container
+          >
+          <ng-container *ngIf="c.type == 'action'">
+            <button
+              class="f-right"
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              aria-label="Example icon-button with a menu"
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button
+                *ngFor="let a of asAction(c).actions"
+                [disabled]="a.disabled"
+                (click)="a.handler()"
+                data-toggle="modal"
+                data-target="#add-serviceCats-modal"
+                mat-menu-item
+              >
+                <mat-icon>{{ a.icon }}</mat-icon>
+                <span>{{ a.text }}</span>
+              </button>
+            </mat-menu>
+          </ng-container>
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <div *ngIf="dataSource.data.length < 1 && !showSpinner" class="">
+    <h3 style="text-align: center;">
+      No elements
+    </h3>
+  </div>
+  <div
+    *ngIf="showSpinner"
+    style="width: 100%;"
+    class="d-flex justify-content-center"
+  >
+    <div style="margin: 5px auto;" class="lds-ripple">
+      <div
+        [ngStyle]="{ 'border-color': loadingColor ? loadingColor : 'green' }"
+      ></div>
+      <div
+        [ngStyle]="{ 'border-color': loadingColor ? loadingColor : 'green' }"
+      ></div>
+    </div>
+  </div>
+
+  <mat-paginator
+    #paginator
+    [length]="dataSource?.data.length"
+    [pageIndex]="0"
+    [pageSize]="50"
+    [pageSizeOptions]="[25, 50, 100, 250]"
+  >
+  </mat-paginator>
+</div>
