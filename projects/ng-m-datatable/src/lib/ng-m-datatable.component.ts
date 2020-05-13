@@ -6,27 +6,28 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  ElementRef,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTable } from "@angular/material/table";
 import { DataTableDataSource } from "./ng-m-datatable.datasource";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { Action } from "rxjs/internal/scheduler/Action";
 
 export interface TextColumn {
   id: string;
   text: string;
   type?: "text";
 }
-export interface ActionColumn {
+
+export interface ActionColumn<T> {
   id: string;
   text: string;
   type: "action";
   actions: [
     {
       text: string;
-      handler: () => void;
+      handler: (data: T) => void;
       icon: string;
       disabled?: string;
     }
@@ -38,18 +39,21 @@ export interface ActionColumn {
   templateUrl: "./ng-m-datatable.component.html",
   styleUrls: ["./ng-m-datatable.component.css"],
 })
-export class NgMDatatable<T> implements AfterViewInit, OnInit, OnChanges {
+export class NgMDatatable<T>
+  implements AfterViewInit, OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatTable, { static: false }) table: MatTable<T>;
+  tableHTML: ElementRef;
   @Input() data: Array<T>;
-  @Input() columns: Array<TextColumn | ActionColumn>;
+  @Input() columns: Array<TextColumn | ActionColumn<T>>;
   @Input() displayedColumns: String[];
-  @Input() tittle: String;
+  @Input() title: String;
   @Input() loadingColor?: String;
   dataSource: DataTableDataSource<T>;
   showSpinner = true;
 
+  tableBackground = "white";
   searchForm: FormGroup;
 
   constructor(fb: FormBuilder) {
@@ -68,8 +72,8 @@ export class NgMDatatable<T> implements AfterViewInit, OnInit, OnChanges {
     this.dataSource = new DataTableDataSource<T>(this.data);
   }
 
-  asAction(c: TextColumn | ActionColumn) {
-    return c as ActionColumn;
+  asAction(c: TextColumn | ActionColumn<T>) {
+    return c as ActionColumn<T>;
   }
 
   filter(searchName: string): any {
@@ -91,6 +95,10 @@ export class NgMDatatable<T> implements AfterViewInit, OnInit, OnChanges {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+
+    const tableStyles = window.getComputedStyle(document.getElementById("klk"));
+    this.tableBackground = tableStyles.background;
+    if (!this.loadingColor) this.loadingColor = tableStyles.color;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -98,6 +106,7 @@ export class NgMDatatable<T> implements AfterViewInit, OnInit, OnChanges {
       this.dataSource.data = this.data;
       this.showSpinner = false;
       this.paginator._changePageSize(this.paginator.pageSize);
+
       // this.table.renderRows();
       // this.dataSource.connect();
     }

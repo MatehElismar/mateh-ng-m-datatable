@@ -1,7 +1,7 @@
-<div class="mat-elevation-z8">
+<div [ngStyle]="{ background: tableBackground }" class="mat-elevation-z8">
   <div class="container">
     <div class="f-left">
-      <h2>{{ tittle }}</h2>
+      <h2>{{ title }}</h2>
     </div>
     <form [formGroup]="searchForm" class="" class="f-right">
       <mat-form-field class="example-full-width">
@@ -11,7 +11,13 @@
       </mat-form-field>
     </form>
   </div>
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
+  <table
+    id="klk"
+    mat-table
+    class="full-width-table"
+    matSort
+    aria-label="Elements"
+  >
     <ng-container *ngFor="let c of columns">
       <ng-container [matColumnDef]="c.id">
         <th
@@ -39,7 +45,7 @@
               <button
                 *ngFor="let a of asAction(c).actions"
                 [disabled]="a.disabled"
-                (click)="a.handler()"
+                (click)="a.handler(row)"
                 data-toggle="modal"
                 data-target="#add-serviceCats-modal"
                 mat-menu-item

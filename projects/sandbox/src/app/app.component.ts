@@ -26,7 +26,7 @@ export class AppComponent implements AfterViewInit {
   title = "Sandbox NgMDataTable";
 
   @ViewChild(NgMDatatable) DataTable: NgMDatatable<Modelo>;
-  tablecolumns: Array<TextColumn | ActionColumn> = [
+  tablecolumns: Array<TextColumn | ActionColumn<Modelo>> = [
     { id: "balance", text: "Balance", type: "text" },
     { id: "age", text: "Edad", type: "text" },
     { id: "eyeColor", text: "Color de Ojos" },
@@ -40,8 +40,8 @@ export class AppComponent implements AfterViewInit {
         {
           text: "Edit",
           icon: "edit",
-          handler: () => {
-            console.log("Pressed Edit");
+          handler: (data) => {
+            console.log("Pressed Edit", data);
           },
         },
       ],
@@ -53,7 +53,8 @@ export class AppComponent implements AfterViewInit {
   data = [];
 
   ngAfterViewInit() {
-    this.DataTable.tittle = "Oyele pendejo!";
+    this.DataTable.title = "Oyele pendejo!";
+    this.DataTable.loadingColor = "blue";
     setTimeout(() => {
       this.data = [
         {
