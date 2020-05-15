@@ -1,11 +1,29 @@
-<div [ngStyle]="{ background: tableBackground }" class="mat-elevation-z8">
-  <div class="container">
+<div
+  [ngStyle]="{ background: tableStyles?.background }"
+  class="mat-elevation-z8"
+>
+  <div [ngStyle]="{ color: tableStyles?.color }" class="container">
     <div class="f-left">
-      <h2>{{ title }}</h2>
+      <h2 class="mat-header-cell">
+        <button
+          *ngIf="addButton"
+          (click)="addButton.handler()"
+          mat-icon-button
+          aria-label="Example icon-button with a heart icon"
+        >
+          <mat-icon>{{ addButton.icon }}</mat-icon>
+        </button>
+        {{ title }}
+      </h2>
     </div>
-    <form [formGroup]="searchForm" class="" class="f-right">
+    <form
+      class="mat-header-cell"
+      [formGroup]="searchForm"
+      class=""
+      class="f-right"
+    >
       <mat-form-field class="example-full-width">
-        <mat-icon matPrefix>search</mat-icon>
+        <mat-icon class="mat-header-cell" matPrefix>search</mat-icon>
         <mat-label>Search</mat-label>
         <input formControlName="search" matInput placeholder="..." value="" />
       </mat-form-field>
@@ -63,7 +81,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <div *ngIf="dataSource.data.length < 1 && !showSpinner" class="">
-    <h3 style="text-align: center;">
+    <h3 class="mat-header-cell" style="text-align: center;">
       No elements
     </h3>
   </div>

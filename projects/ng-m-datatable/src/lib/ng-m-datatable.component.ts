@@ -24,14 +24,12 @@ export interface ActionColumn<T> {
   id: string;
   text: string;
   type: "action";
-  actions: [
-    {
-      text: string;
-      handler: (data: T) => void;
-      icon: string;
-      disabled?: string;
-    }
-  ];
+  actions: Array<{
+    text: string;
+    handler: (data: T) => void;
+    icon: string;
+    disabled?: string;
+  }>;
 }
 
 @Component({
@@ -45,15 +43,21 @@ export class NgMDatatable<T>
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatTable, { static: false }) table: MatTable<T>;
   tableHTML: ElementRef;
+
   @Input() data: Array<T>;
   @Input() columns: Array<TextColumn | ActionColumn<T>>;
   @Input() displayedColumns: String[];
   @Input() title: String;
+  @Input() addButton: {
+    icon: string;
+    handler: () => void;
+  };
   @Input() loadingColor?: String;
+
   dataSource: DataTableDataSource<T>;
   showSpinner = true;
 
-  tableBackground = "white";
+  tableStyles: CSSStyleDeclaration;
   searchForm: FormGroup;
 
   constructor(fb: FormBuilder) {
@@ -96,9 +100,9 @@ export class NgMDatatable<T>
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
 
-    const tableStyles = window.getComputedStyle(document.getElementById("klk"));
-    this.tableBackground = tableStyles.background;
-    if (!this.loadingColor) this.loadingColor = tableStyles.color;
+    this.tableStyles = window.getComputedStyle(document.getElementById("klk"));
+
+    if (!this.loadingColor) this.loadingColor = this.tableStyles.color;
   }
 
   ngOnChanges(changes: SimpleChanges) {

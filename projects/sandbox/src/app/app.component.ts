@@ -53,8 +53,14 @@ export class AppComponent implements AfterViewInit {
   data = [];
 
   ngAfterViewInit() {
-    this.DataTable.title = "Oyele pendejo!";
+    this.DataTable.title = "Datatable Title!";
     this.DataTable.loadingColor = "blue";
+    this.DataTable.addButton = {
+      icon: "add",
+      handler: () => {
+        console.log("se preciono el boton de agregar");
+      },
+    };
     setTimeout(() => {
       this.data = [
         {
