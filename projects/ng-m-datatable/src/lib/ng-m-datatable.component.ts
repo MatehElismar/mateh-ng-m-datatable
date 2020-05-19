@@ -18,8 +18,8 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 export interface NgMDatatableOptions<T> {
   columns: Array<TextColumn | ActionColumn<T>>;
   displayedColumns: String[];
-  title: String;
-  addButton: {
+  title?: String;
+  addButton?: {
     icon: string;
     handler: () => void;
   };
