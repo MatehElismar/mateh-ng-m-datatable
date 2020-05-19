@@ -82,11 +82,12 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
     return c as ActionColumn<T>;
   }
 
-  filter(searchName: string): any {
+  filter(searchName: string = ""): any {
     return searchName && searchName.trim()
       ? this.data.filter((x) => {
           for (const key in x) {
             if (
+              x[key] &&
               x[key].toString().toLowerCase().includes(searchName.toLowerCase())
             )
               return x;

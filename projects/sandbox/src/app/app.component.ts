@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
           balance: "$1,859.91",
           age: 34,
           eyeColor: "brown",
-          name: "Mason Valentine",
+          name: null,
           gender: "male",
           company: "RECRISYS",
           email: "masonvalentine@recrisys.com",
