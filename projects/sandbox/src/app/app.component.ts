@@ -64,7 +64,6 @@ export class AppComponent implements OnInit {
         console.log("se preciono el boton de agregar");
       },
     },
-    loadingColor: "blue",
   };
 
   data: Modelo[] = [];

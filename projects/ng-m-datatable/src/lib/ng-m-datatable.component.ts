@@ -23,7 +23,6 @@ export interface NgMDatatableOptions<T> {
     icon: string;
     handler: () => void;
   };
-  loadingColor?: String;
 }
 
 export interface TextColumn {
@@ -49,7 +48,7 @@ export interface ActionColumn<T> {
   templateUrl: "./ng-m-datatable.component.html",
   styleUrls: ["./ng-m-datatable.component.css"],
 })
-export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewChecked {
+export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatTable, { static: false }) table: MatTable<T>;
@@ -96,7 +95,7 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewChecked {
       : this.data;
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewInit() {
     this.dataSource.data = this.data || [];
 
     this.dataSource.sort = this.sort;
@@ -116,17 +115,20 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewChecked {
         `background : ${this.tableBg}; color : ${this.tableColor}`
       );
 
-    if (!this.options!.loadingColor)
-      this.options!.loadingColor = this.tableColor;
+    if (this.data.length > 0) this.toggleLoading(false);
+  }
 
-    if (this.data.length > 0) this.showSpinner = false;
+  toggleLoading(v: boolean) {
+    this.showSpinner = v;
+    const el = document.querySelector("#loading");
+    if (el) el.setAttribute("style", `border-color : ${this.tableColor};`);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     console.log("changes", changes);
-    if (changes.data) {
-      this.dataSource.data = this.data;
-      this.showSpinner = false;
+    if (changes.data && !changes.data.firstChange) {
+      this.dataSource!.data = this.data || [];
+      this.toggleLoading(false);
       this.paginator._changePageSize(this.paginator.pageSize);
     }
   }

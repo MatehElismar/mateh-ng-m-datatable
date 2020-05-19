@@ -1,4 +1,4 @@
-<div class="table-container">
+<div class="table-container mat-elevation-z8">
   <div class="table-header">
     <div class="f-left">
       <h2>
@@ -76,7 +76,7 @@
     <tr mat-row *matRowDef="let row; columns: options?.displayedColumns"></tr>
   </table>
   <div *ngIf="dataSource.data.length < 1 && !showSpinner" class="">
-    <h3 [ngStyle]="{ color: tableColor }" style="text-align: center;">
+    <h3 style="text-align: center;">
       No elements
     </h3>
   </div>
@@ -87,13 +87,7 @@
   >
     <div style="margin: 5px auto;" class="lds-ripple">
       <div></div>
-      <div
-        [ngStyle]="{
-          'border-color': options?.loadingColor
-            ? options?.loadingColor
-            : 'green'
-        }"
-      ></div>
+      <div style="border-color: green;"></div>
     </div>
   </div>
 
