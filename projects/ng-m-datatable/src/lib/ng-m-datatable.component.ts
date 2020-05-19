@@ -7,12 +7,24 @@ import {
   OnChanges,
   SimpleChanges,
   ElementRef,
+  AfterViewChecked,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTable } from "@angular/material/table";
 import { DataTableDataSource } from "./ng-m-datatable.datasource";
 import { FormGroup, FormBuilder } from "@angular/forms";
+
+export interface NgMDatatableOptions<T> {
+  columns: Array<TextColumn | ActionColumn<T>>;
+  displayedColumns: String[];
+  title: String;
+  addButton: {
+    icon: string;
+    handler: () => void;
+  };
+  loadingColor?: String;
+}
 
 export interface TextColumn {
   id: string;
@@ -37,27 +49,19 @@ export interface ActionColumn<T> {
   templateUrl: "./ng-m-datatable.component.html",
   styleUrls: ["./ng-m-datatable.component.css"],
 })
-export class NgMDatatable<T>
-  implements AfterViewInit, OnInit, OnChanges, AfterViewInit {
+export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatTable, { static: false }) table: MatTable<T>;
   tableHTML: ElementRef;
 
-  @Input() data: Array<T>;
-  @Input() columns: Array<TextColumn | ActionColumn<T>>;
-  @Input() displayedColumns: String[];
-  @Input() title: String;
-  @Input() addButton: {
-    icon: string;
-    handler: () => void;
-  };
-  @Input() loadingColor?: String;
+  @Input() options: NgMDatatableOptions<T>;
+  @Input() data: Array<T> = [];
 
   dataSource: DataTableDataSource<T>;
   showSpinner = true;
-
-  tableStyles: CSSStyleDeclaration;
+  tableColor: string;
+  tableBg: string;
   searchForm: FormGroup;
 
   constructor(fb: FormBuilder) {
@@ -72,8 +76,7 @@ export class NgMDatatable<T>
   }
 
   ngOnInit() {
-    console.log(this.data, this.columns, this.displayedColumns);
-    this.dataSource = new DataTableDataSource<T>(this.data);
+    this.dataSource = new DataTableDataSource<T>(this.data || []);
   }
 
   asAction(c: TextColumn | ActionColumn<T>) {
@@ -93,26 +96,38 @@ export class NgMDatatable<T>
       : this.data;
   }
 
-  ngAfterViewInit() {
-    this.dataSource.data = this.data;
+  ngAfterViewChecked() {
+    this.dataSource.data = this.data || [];
 
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
 
-    this.tableStyles = window.getComputedStyle(document.getElementById("klk"));
+    this.tableBg = window.getComputedStyle(
+      document.getElementById("klk")
+    ).background;
+    this.tableColor = window.getComputedStyle(
+      document.querySelector(".mat-header-cell")
+    ).color;
+    document
+      .querySelector(".table-container")
+      .setAttribute(
+        "style",
+        `background : ${this.tableBg}; color : ${this.tableColor}`
+      );
 
-    if (!this.loadingColor) this.loadingColor = this.tableStyles.color;
+    if (!this.options!.loadingColor)
+      this.options!.loadingColor = this.tableColor;
+
+    if (this.data.length > 0) this.showSpinner = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.data && !changes.data.firstChange) {
+    console.log("changes", changes);
+    if (changes.data) {
       this.dataSource.data = this.data;
       this.showSpinner = false;
       this.paginator._changePageSize(this.paginator.pageSize);
-
-      // this.table.renderRows();
-      // this.dataSource.connect();
     }
   }
 }

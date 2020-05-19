@@ -1,19 +1,16 @@
-<div
-  [ngStyle]="{ background: tableStyles?.background }"
-  class="mat-elevation-z8"
->
-  <div [ngStyle]="{ color: tableStyles?.color }" class="container">
+<div class="table-container">
+  <div class="table-header">
     <div class="f-left">
-      <h2 class="mat-header-cell">
+      <h2>
         <button
-          *ngIf="addButton"
-          (click)="addButton.handler()"
+          *ngIf="options?.addButton"
+          (click)="options?.addButton.handler()"
           mat-icon-button
           aria-label="Example icon-button with a heart icon"
         >
-          <mat-icon>{{ addButton.icon }}</mat-icon>
+          <mat-icon>{{ options?.addButton.icon }}</mat-icon>
         </button>
-        {{ title }}
+        {{ options?.title }}
       </h2>
     </div>
     <form
@@ -23,20 +20,14 @@
       class="f-right"
     >
       <mat-form-field class="example-full-width">
-        <mat-icon class="mat-header-cell" matPrefix>search</mat-icon>
+        <mat-icon matPrefix>search</mat-icon>
         <mat-label>Search</mat-label>
         <input formControlName="search" matInput placeholder="..." value="" />
       </mat-form-field>
     </form>
   </div>
-  <table
-    id="klk"
-    mat-table
-    class="full-width-table"
-    matSort
-    aria-label="Elements"
-  >
-    <ng-container *ngFor="let c of columns">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <ng-container *ngFor="let c of options?.columns">
       <ng-container [matColumnDef]="c.id">
         <th
           [ngClass]="{ 't-right': c.type == 'action' }"
@@ -77,11 +68,15 @@
       </ng-container>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      id="klk"
+      mat-header-row
+      *matHeaderRowDef="options?.displayedColumns"
+    ></tr>
+    <tr mat-row *matRowDef="let row; columns: options?.displayedColumns"></tr>
   </table>
   <div *ngIf="dataSource.data.length < 1 && !showSpinner" class="">
-    <h3 class="mat-header-cell" style="text-align: center;">
+    <h3 [ngStyle]="{ color: tableColor }" style="text-align: center;">
       No elements
     </h3>
   </div>
@@ -91,11 +86,13 @@
     class="d-flex justify-content-center"
   >
     <div style="margin: 5px auto;" class="lds-ripple">
+      <div></div>
       <div
-        [ngStyle]="{ 'border-color': loadingColor ? loadingColor : 'green' }"
-      ></div>
-      <div
-        [ngStyle]="{ 'border-color': loadingColor ? loadingColor : 'green' }"
+        [ngStyle]="{
+          'border-color': options?.loadingColor
+            ? options?.loadingColor
+            : 'green'
+        }"
       ></div>
     </div>
   </div>
