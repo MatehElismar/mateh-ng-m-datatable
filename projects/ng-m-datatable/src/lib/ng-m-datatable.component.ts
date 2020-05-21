@@ -8,12 +8,15 @@ import {
   SimpleChanges,
   ElementRef,
   AfterViewChecked,
+  AfterContentInit,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTable } from "@angular/material/table";
 import { DataTableDataSource } from "./ng-m-datatable.datasource";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 
 export interface NgMDatatableOptions<T> {
   columns: Array<TextColumn | ActionColumn<T>>;
@@ -59,11 +62,15 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
 
   dataSource: DataTableDataSource<T>;
   showSpinner = true;
-  tableColor: string;
-  tableBg: string;
+  tableColor: SafeStyle;
+  tableBg: SafeStyle;
   searchForm: FormGroup;
 
-  constructor(fb: FormBuilder) {
+  constructor(
+    fb: FormBuilder,
+    private cdRef: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
+  ) {
     this.searchForm = fb.group({
       search: [""],
     });
@@ -103,18 +110,16 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
 
-    this.tableBg = window.getComputedStyle(
-      document.getElementById("klk")
-    ).background;
-    this.tableColor = window.getComputedStyle(
-      document.querySelector(".mat-header-cell")
-    ).color;
-    document
-      .querySelector(".table-container")
-      .setAttribute(
-        "style",
-        `background : ${this.tableBg}; color : ${this.tableColor}`
-      );
+    // buscamos el color (bg & fore ground) que tiene la table proviniente del tema de material y se lo ponemos tambien al container
+    // es necesario sanitarlos para que el navegador pueda tomar estos estilos
+    this.tableBg = this.sanitizer.bypassSecurityTrustStyle(
+      window.getComputedStyle(document.getElementById("klk")).background
+    );
+    this.tableColor = this.sanitizer.bypassSecurityTrustStyle(
+      window.getComputedStyle(document.querySelector(".mat-header-cell")).color
+    );
+
+    this.cdRef.detectChanges();
 
     if (this.data.length > 0) this.toggleLoading(false);
   }
@@ -122,11 +127,11 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   toggleLoading(v: boolean) {
     this.showSpinner = v;
     const el = document.querySelector("#loading");
-    if (el) el.setAttribute("style", `border-color : ${this.tableColor};`);
+    if (el)
+      el.setAttribute("style", `border-color : ${this.tableColor} !important;`);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("changes", changes);
     if (changes.data && !changes.data.firstChange) {
       this.dataSource!.data = this.data || [];
       this.toggleLoading(false);

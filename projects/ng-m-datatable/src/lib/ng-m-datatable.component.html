@@ -1,4 +1,8 @@
-<div class="table-container mat-elevation-z8">
+<div
+  [style.background]="tableBg"
+  [style.color]="tableColor"
+  class="table-container mat-elevation-z8"
+>
   <div class="table-header">
     <div class="f-left">
       <h2>
@@ -21,8 +25,14 @@
     >
       <mat-form-field class="example-full-width">
         <mat-icon matPrefix>search</mat-icon>
-        <mat-label>Search</mat-label>
-        <input formControlName="search" matInput placeholder="..." value="" />
+        <mat-label [style.color]="tableColor">Search</mat-label>
+        <input
+          [style.color]="tableColor"
+          formControlName="search"
+          matInput
+          placeholder="..."
+          value=""
+        />
       </mat-form-field>
     </form>
   </div>
