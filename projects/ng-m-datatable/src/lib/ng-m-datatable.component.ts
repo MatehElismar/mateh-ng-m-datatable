@@ -7,8 +7,6 @@ import {
   OnChanges,
   SimpleChanges,
   ElementRef,
-  AfterViewChecked,
-  AfterContentInit,
   ChangeDetectorRef,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
