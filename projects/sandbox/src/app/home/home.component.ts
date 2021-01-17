@@ -27,9 +27,17 @@ export class HomeComponent implements OnInit {
     columns: [
       { id: "balance", text: "Balance", type: "text" },
       { id: "age", text: "Edad", type: "text" },
-      { id: "eyeColor", text: "Color de Ojos" },
+      {
+        id: "eyeColor",
+        text: "Color de Ojos",
+        color: "accent",
+        type: "button",
+        handler: () => {
+          console.log("clicked");
+        },
+      },
       { id: "name", text: "Nombre" },
-      { id: "gender", text: "Genero", type: "text" },
+      { id: "gender", text: "Genero", type: "badge" },
       {
         id: "action",
         text: "Actopms",

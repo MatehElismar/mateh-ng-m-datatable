@@ -98,7 +98,7 @@ table.mat-table {
   display: table-cell;
   padding: 0px 5px;
   line-break: unset;
-  width: 100%;
+  width: calc(100% / 45);
   white-space: nowrap;
   overflow: hidden;
   vertical-align: middle;

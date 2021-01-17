@@ -17,7 +17,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 
 export interface NgMDatatableOptions<T> {
-  columns: Array<TextColumn | ActionColumn<T>>;
+  columns: Array<TextColumn | BadgeColumn | ActionColumn<T> | ButtonColumn<T>>;
   displayedColumns: String[];
   title?: String;
   addButton?: {
@@ -42,6 +42,23 @@ export interface ActionColumn<T> {
     icon: string;
     disabled?: string;
   }>;
+}
+
+export interface ButtonColumn<T> {
+  id: string;
+  text: string;
+  type: "button";
+  color?: string;
+  handler: (data: T) => void;
+  disabled?: string;
+  icon?: string;
+}
+
+export interface BadgeColumn {
+  id: string;
+  text: string;
+  color?: string;
+  type: "badge";
 }
 
 @Component({
