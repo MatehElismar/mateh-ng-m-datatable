@@ -4,10 +4,12 @@
   "scripts": {
     "postinstall": "ngcc"
   },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "^9.0.7",
     "@angular/core": "^9.0.7",
-    "@angular/material": "^9.2.3",
-    "tslib": "^1.10.0"
+    "@angular/material": "^9.2.3"
   }
 }
