@@ -1,6 +1,6 @@
 {
   "name": "mateh-ng-m-datatable",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "scripts": {
     "postinstall": "ngcc"
   },
@@ -8,8 +8,8 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": "^9.0.7",
-    "@angular/core": "^9.0.7",
-    "@angular/material": "^9.2.3"
+    "@angular/common": "^13.2.0",
+    "@angular/core": "^13.2.0",
+    "@angular/material": "^13.2.0"
   }
 }
