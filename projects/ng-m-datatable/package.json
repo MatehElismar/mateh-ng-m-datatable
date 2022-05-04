@@ -1,9 +1,7 @@
 {
   "name": "mateh-ng-m-datatable",
-  "version": "1.1.12",
-  "scripts": {
-    "postinstall": "ngcc"
-  },
+  "version": "1.1.13",
+  "scripts": {},
   "dependencies": {
     "tslib": "^2.0.0"
   },
