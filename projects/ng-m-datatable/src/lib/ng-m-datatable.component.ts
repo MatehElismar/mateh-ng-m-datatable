@@ -24,6 +24,15 @@ export interface NgMDatatableOptions<T> {
     icon: string;
     handler: () => void;
   };
+  filterSelect?: {
+    placeholder: string;
+    items: Array<{
+      value: string;
+      label: string;
+    }>;
+    filter: (value: T, change: any) => boolean;
+    change: (e: any) => void;
+  };
 }
 
 export interface TextColumn {
@@ -88,10 +97,17 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   ) {
     this.searchForm = fb.group({
       search: [""],
+      filterSelect: [""],
     });
 
     this.searchForm.valueChanges.subscribe((v) => {
-      this.dataSource.data = this.filter(v.search);
+      const filteredData = this.filter(v.search);
+      const filteredSelectData = filteredData.filter((x) =>
+        this.options.filterSelect.filter(x, v.filterSelect)
+      );
+      this.dataSource.data =
+        filteredSelectData.length > 0 ? filteredSelectData : filteredData;
+
       this.paginator._changePageSize(this.paginator.pageSize);
     });
   }

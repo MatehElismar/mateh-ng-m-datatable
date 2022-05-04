@@ -23,6 +23,28 @@
       class=""
       class="f-right"
     >
+      <mat-form-field
+        *ngIf="options.filterSelect"
+        class="filter-field"
+        appearance="fill"
+      >
+        <mat-label>{{ options.filterSelect.placeholder }}</mat-label>
+        <mat-select
+          (valueChange)="
+            options.filterSelect.change
+              ? options.filterSelect.change($event)
+              : null
+          "
+          formControlName="filterSelect"
+        >
+          <mat-option
+            *ngFor="let item of options.filterSelect.items"
+            [value]="item.value"
+          >
+            {{ item.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-icon matPrefix>search</mat-icon>
         <mat-label [style.color]="tableColor">Search</mat-label>

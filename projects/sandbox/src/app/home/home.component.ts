@@ -24,6 +24,28 @@ export interface Modelo {
 export class HomeComponent implements OnInit {
   @ViewChild(NgMDatatable) DataTable: NgMDatatable<Modelo>;
   dataTableOptions: NgMDatatableOptions<Modelo> = {
+    filterSelect: {
+      placeholder: "Filter",
+      items: [
+        {
+          value: "brown",
+          label: "Brown",
+        },
+        {
+          value: "blue",
+          label: "Blue",
+        },
+        {
+          value: "",
+          label: "All",
+        },
+      ],
+      filter: (value, filterValue) => {
+        return value.eyeColor === filterValue;
+      },
+      change: (value: any) => {
+      },
+    },
     columns: [
       { id: "balance", text: "Balance", type: "text" },
       { id: "age", text: "Edad", type: "text" },
@@ -71,6 +93,7 @@ export class HomeComponent implements OnInit {
   };
 
   data: Modelo[] = [];
+  filteredData: Modelo[] = [];
 
   ngOnInit() {
     setTimeout(() => {

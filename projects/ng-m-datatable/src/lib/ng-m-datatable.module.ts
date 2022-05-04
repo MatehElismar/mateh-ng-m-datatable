@@ -11,12 +11,14 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { ReactiveFormsModule } from "@angular/forms";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   declarations: [NgMDatatable],
   imports: [
     CommonModule,
     MatTableModule,
+    MatSelectModule,
     ReactiveFormsModule,
     MatMenuModule,
     MatButtonModule,

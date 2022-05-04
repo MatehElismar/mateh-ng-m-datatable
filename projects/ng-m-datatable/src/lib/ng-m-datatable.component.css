@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.filter-field{
+  margin: 0px 30px;
+}
+
 .t-right {
   display: flex;
   padding: 21px 0;
