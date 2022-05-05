@@ -8,6 +8,8 @@ import {
   SimpleChanges,
   ElementRef,
   ChangeDetectorRef,
+  EventEmitter,
+  Output,
 } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
@@ -16,15 +18,23 @@ import { DataTableDataSource } from "./ng-m-datatable.datasource";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 
+export enum SearchMode {
+  Default,
+  Local,
+  Backend,
+}
+
 export interface NgMDatatableOptions<T> {
   columns: Array<TextColumn | BadgeColumn | ActionColumn<T> | ButtonColumn<T>>;
   displayedColumns: String[];
+  searchMode: SearchMode;
   title?: String;
   addButton?: {
     icon: string;
     handler: () => void;
   };
   filterSelect?: {
+    mode: SearchMode;
     placeholder: string;
     items: Array<{
       value: string;
@@ -81,6 +91,9 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatTable, { static: false }) table: MatTable<T>;
   tableHTML: ElementRef;
 
+  @Output() searchChange = new EventEmitter();
+  @Output() filterChange = new EventEmitter();
+
   @Input() options: NgMDatatableOptions<T>;
   @Input() data: Array<T> = [];
 
@@ -101,14 +114,37 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
     });
 
     this.searchForm.valueChanges.subscribe((v) => {
-      const filteredData = this.filter(v.search);
-      const filteredSelectData = filteredData.filter((x) =>
-        this.options.filterSelect.filter(x, v.filterSelect)
-      );
-      this.dataSource.data =
-        filteredSelectData.length > 0 ? filteredSelectData : filteredData;
+      if (
+        this.options.searchMode == SearchMode.Default ||
+        this.options.searchMode == SearchMode.Local
+      ) {
+        const filteredData = this.filter(v.search);
+
+        // apply select filter to data source.
+        const filteredSelectData = filteredData.filter((x) =>
+          this.options.filterSelect.filter(x, v.filterSelect)
+        );
+        this.dataSource.data =
+          filteredSelectData.length > 0 ? filteredSelectData : filteredData;
+      } else {
+        // Emit event
+        this.searchChange.emit(v.search);
+        this.filterChange.emit(v.filterSelect);
+      }
 
       this.paginator._changePageSize(this.paginator.pageSize);
+    });
+
+    this.searchForm.get("filterSelect").valueChanges.subscribe((v) => {
+      if (this.options.filterSelect.mode == SearchMode.Backend) {
+        this.filterChange.emit(v);
+      }
+    });
+
+    this.searchForm.get("search").valueChanges.subscribe((v) => {
+      if (this.options.searchMode == SearchMode.Backend) {
+        this.searchChange.emit(v);
+      }
     });
   }
 
