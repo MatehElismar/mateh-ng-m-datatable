@@ -25,16 +25,22 @@ export enum SearchMode {
 }
 
 export interface NgMDatatableOptions<T> {
-  columns: Array<TextColumn | BadgeColumn | ActionColumn<T> | ButtonColumn<T>>;
+  columns: Array<
+    | TextColumn
+    | BadgeColumn
+    | ActionColumn<T>
+    | ButtonColumn<T>
+    | IconButtonColumn<T>
+  >;
   displayedColumns: String[];
-  searchMode: SearchMode;
+  searchMode?: SearchMode;
   title?: String;
   addButton?: {
     icon: string;
     handler: () => void;
   };
   filterSelect?: {
-    mode: SearchMode;
+    mode?: SearchMode;
     placeholder: string;
     items: Array<{
       value: string;
@@ -71,6 +77,17 @@ export interface ButtonColumn<T> {
   handler: (data: T) => void;
   disabled?: string;
   icon?: string;
+}
+
+export interface IconButtonColumn<T> {
+  id: string;
+  type: "icon-button";
+  text: string;
+  icon: string;
+  background?:string;
+  color?: string;
+  handler: (data: T) => void;
+  disabled?: string;
 }
 
 export interface BadgeColumn {
