@@ -143,10 +143,6 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
         );
         this.dataSource.data =
           filteredSelectData.length > 0 ? filteredSelectData : filteredData;
-      } else {
-        // Emit event
-        this.searchChange.emit(v.search);
-        this.filterChange.emit(v.filterSelect);
       }
 
       this.paginator._changePageSize(this.paginator.pageSize);
