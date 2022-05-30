@@ -52,8 +52,10 @@ export class HomeComponent implements OnInit {
       {
         id: "eyeColor",
         text: "Color de Ojos",
-        color: "accent",
-        type: "button",
+        color: "red",
+        background: "yellow",
+        type: "icon-button",
+        icon : "fa fa-eye",
         handler: () => {
           console.log("clicked");
         },

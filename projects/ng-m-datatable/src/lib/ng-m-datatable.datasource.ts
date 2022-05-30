@@ -39,7 +39,7 @@ export class DataTableDataSource<T> extends DataSource<T> {
       this.sort.sortChange,
     ];
 
-    return merge(...dataMutations).pipe(
+    return merge(...dataMutations as any).pipe(
       map(() => {
         return this.getPagedData(this.getSortedData([...this.data]));
       })
