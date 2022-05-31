@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import {
   NgMDatatable,
   NgMDatatableOptions,
+  PaginationMode
 } from "projects/ng-m-datatable/src/public-api";
 
 export interface Modelo {
   balance: any;
-  age: any;
+  age: number;
   eyeColor: any;
   name: any;
   gender: any;
@@ -24,6 +25,14 @@ export interface Modelo {
 export class HomeComponent implements OnInit {
   @ViewChild(NgMDatatable) DataTable: NgMDatatable<Modelo>;
   dataTableOptions: NgMDatatableOptions<Modelo> = {
+    pagination: {
+      mode: PaginationMode.Backend,
+      pageSize: 10,
+      change: (e) => {
+        const d = this.rawData.slice(e.pageIndex * e.pageSize, (e.pageIndex + 1) * e.pageSize);
+        this.data = d;
+      },
+    },
     filterSelect: {
       placeholder: "Filter",
       items: [
@@ -55,9 +64,8 @@ export class HomeComponent implements OnInit {
         color: "red",
         background: "yellow",
         type: "icon-button",
-        icon : "fa fa-eye",
+        icon: "fa fa-eye",
         handler: () => {
-          console.log("clicked");
         },
       },
       { id: "name", text: "Nombre" },
@@ -85,7 +93,7 @@ export class HomeComponent implements OnInit {
       "gender",
       "action",
     ],
-    title: "Home Datatable Title!",
+    title: "Home Datatable Title! (Backend pagination)",
     addButton: {
       icon: "add",
       handler: () => {
@@ -94,15 +102,16 @@ export class HomeComponent implements OnInit {
     },
   };
 
+  rawData: Modelo[] = [];
   data: Modelo[] = [];
   filteredData: Modelo[] = [];
 
   ngOnInit() {
     setTimeout(() => {
-      this.data = [
+      this.rawData = [
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 2,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -113,7 +122,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 3,
           eyeColor: "brown",
           name: null,
           gender: "male",
@@ -124,7 +133,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 4,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -135,7 +144,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 5,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -146,7 +155,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 6,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -157,7 +166,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 7,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -168,7 +177,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 8,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -179,7 +188,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 9,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -190,7 +199,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 10,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -201,7 +210,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 11,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -212,7 +221,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 12,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -223,7 +232,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 13,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -234,7 +243,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 14,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -245,7 +254,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 15,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -256,7 +265,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 16,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -267,7 +276,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 17,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -278,7 +287,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 18,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -289,7 +298,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 19,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -300,7 +309,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 20,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -311,7 +320,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 21,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -322,7 +331,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 22,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -333,7 +342,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 23,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -344,7 +353,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 24,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -355,7 +364,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 25,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -366,7 +375,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 26,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -377,7 +386,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 27,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -388,7 +397,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 28,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -399,7 +408,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 29,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -410,7 +419,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 30,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -421,7 +430,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 31,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -432,7 +441,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 32,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -443,7 +452,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 33,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -454,7 +463,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 34,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -465,7 +474,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 35,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -476,7 +485,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 36,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -487,7 +496,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 37,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -498,7 +507,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 38,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -509,7 +518,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 39,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -520,7 +529,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 40,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -531,7 +540,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 41,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -542,7 +551,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 42,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -553,7 +562,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 43,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -564,7 +573,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 44,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -575,7 +584,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 45,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -586,7 +595,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 46,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -597,7 +606,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 47,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -608,7 +617,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 48,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -619,7 +628,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 49,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -630,7 +639,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 50,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -641,7 +650,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 51,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -652,7 +661,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 52,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -663,7 +672,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 53,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -674,7 +683,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 54,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -685,7 +694,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 55,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -696,7 +705,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 56,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -707,7 +716,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 57,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -718,7 +727,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 58,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -729,7 +738,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 59,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -740,7 +749,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 60,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -751,7 +760,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 61,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -762,7 +771,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 62,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -773,7 +782,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 63,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -784,7 +793,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 64,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -795,7 +804,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 65,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -806,7 +815,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 66,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -817,7 +826,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 67,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -828,7 +837,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 68,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -839,7 +848,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 69,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -850,7 +859,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 70,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -861,7 +870,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 71,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -872,7 +881,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 72,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -883,7 +892,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 73,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -894,7 +903,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 74,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -905,7 +914,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 75,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -916,7 +925,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 76,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -927,7 +936,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 77,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -938,7 +947,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 78,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -949,7 +958,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 79,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -960,7 +969,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 80,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -971,7 +980,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 81,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -982,7 +991,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 82,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -993,7 +1002,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 83,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1004,7 +1013,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 84,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1015,7 +1024,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 85,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1026,7 +1035,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 86,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1037,7 +1046,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 87,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1048,7 +1057,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 88,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1059,7 +1068,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 89,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1070,7 +1079,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 90,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1081,7 +1090,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 91,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1092,7 +1101,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 92,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1103,7 +1112,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 93,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1114,7 +1123,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 94,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1125,7 +1134,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 95,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1136,7 +1145,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 96,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1147,7 +1156,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 97,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1158,7 +1167,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 98,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1169,7 +1178,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 99,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1180,7 +1189,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 100,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1191,7 +1200,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 101,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1202,7 +1211,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 102,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1213,7 +1222,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 103,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1224,7 +1233,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 104,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1235,7 +1244,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 105,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1246,7 +1255,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 106,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1257,7 +1266,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 107,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1268,7 +1277,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 108,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1279,7 +1288,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 109,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1290,7 +1299,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 110,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1301,7 +1310,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 111,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1312,7 +1321,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 112,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1323,7 +1332,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 113,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1334,7 +1343,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 114,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1345,7 +1354,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 115,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1356,7 +1365,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 116,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1367,7 +1376,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 117,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1378,7 +1387,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 118,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1389,7 +1398,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 119,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1400,7 +1409,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 120,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1411,7 +1420,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 121,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1422,7 +1431,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 122,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1433,7 +1442,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 123,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1444,7 +1453,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 124,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1455,7 +1464,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 125,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1466,7 +1475,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 126,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1477,7 +1486,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 127,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1488,7 +1497,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 128,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1499,7 +1508,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 129,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1510,7 +1519,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 130,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1521,7 +1530,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 131,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1532,7 +1541,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 132,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1543,7 +1552,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 133,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1554,7 +1563,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 134,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1565,7 +1574,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 135,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1576,7 +1585,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 136,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1587,7 +1596,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 137,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1598,7 +1607,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 138,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1609,7 +1618,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 139,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1620,7 +1629,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 140,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1631,7 +1640,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 141,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1642,7 +1651,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 142,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1653,7 +1662,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 143,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1664,7 +1673,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 144,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1675,7 +1684,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 145,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1686,7 +1695,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 146,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1697,7 +1706,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 147,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1708,7 +1717,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 148,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1719,7 +1728,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 149,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1730,7 +1739,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 150,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1741,7 +1750,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 151,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1752,7 +1761,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 152,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1763,7 +1772,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 153,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1774,7 +1783,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 154,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1785,7 +1794,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 155,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1796,7 +1805,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 156,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1807,7 +1816,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 157,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1818,7 +1827,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 158,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1829,7 +1838,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 159,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1840,7 +1849,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 160,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1851,7 +1860,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 161,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1862,7 +1871,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 162,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1873,7 +1882,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 163,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1884,7 +1893,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 164,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1895,7 +1904,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 165,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1906,7 +1915,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 166,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1917,7 +1926,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 167,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1928,7 +1937,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 168,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -1939,7 +1948,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 169,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -1950,7 +1959,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 170,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -1961,7 +1970,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 171,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -1972,7 +1981,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 172,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -1983,7 +1992,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 173,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -1994,7 +2003,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 174,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -2005,7 +2014,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 175,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -2016,7 +2025,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 176,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -2027,7 +2036,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 177,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -2038,7 +2047,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 178,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -2049,7 +2058,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 179,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -2060,7 +2069,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 180,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -2071,7 +2080,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 181,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -2082,7 +2091,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 182,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -2093,7 +2102,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 183,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -2104,7 +2113,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 184,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -2115,7 +2124,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 185,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -2126,7 +2135,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 186,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -2137,7 +2146,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 187,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -2148,7 +2157,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 188,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -2159,7 +2168,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 189,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -2170,7 +2179,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 190,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -2181,7 +2190,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 191,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -2192,7 +2201,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 192,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -2203,7 +2212,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 193,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -2214,7 +2223,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 194,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -2225,7 +2234,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 195,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -2236,7 +2245,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 196,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -2247,7 +2256,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 197,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -2258,7 +2267,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 198,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -2269,7 +2278,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 199,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -2280,7 +2289,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,845.96",
-          age: 33,
+          age: 200,
           eyeColor: "brown",
           name: "Valarie Santos",
           gender: "female",
@@ -2291,7 +2300,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$1,859.91",
-          age: 34,
+          age: 201,
           eyeColor: "brown",
           name: "Mason Valentine",
           gender: "male",
@@ -2302,7 +2311,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,157.01",
-          age: 29,
+          age: 202,
           eyeColor: "blue",
           name: "Audra Duran",
           gender: "female",
@@ -2313,7 +2322,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,228.88",
-          age: 21,
+          age: 203,
           eyeColor: "brown",
           name: "Maddox Olsen",
           gender: "male",
@@ -2324,7 +2333,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$2,600.84",
-          age: 37,
+          age: 204,
           eyeColor: "brown",
           name: "Corinne Puckett",
           gender: "female",
@@ -2335,7 +2344,7 @@ export class HomeComponent implements OnInit {
         },
         {
           balance: "$3,095.16",
-          age: 30,
+          age: 205,
           eyeColor: "blue",
           name: "Harrington Cannon",
           gender: "male",
@@ -2345,6 +2354,9 @@ export class HomeComponent implements OnInit {
           address: "867 Locust Avenue, Finderne, Alaska, 5425",
         },
       ];
+      this.data = this.rawData.slice(0, this.dataTableOptions.pagination.pageSize);
+      console.log(this.data);
+
     }, 3000);
   }
 }
