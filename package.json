@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "version:package": "cd projects/ng-m-datatable && npm version",
+    "build:package": "ng build ng-m-datatable --configuration production",
+    "publish:package": "npm publish ng-m-datatable --configuration production"
   },
   "private": true,
   "dependencies": {
