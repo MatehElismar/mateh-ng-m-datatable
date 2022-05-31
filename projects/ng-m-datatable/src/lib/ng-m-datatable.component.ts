@@ -19,9 +19,22 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
 
 export enum SearchMode {
+  Default = undefined,
+  Local = 1,
+  Backend = 2,
+}
+
+export enum PaginationMode {
   Default,
   Local,
   Backend,
+}
+
+interface PageChangeEventPayload {
+  previousPageIndex: number;
+  pageIndex: number;
+  pageSize: number;
+  length: number
 }
 
 export interface NgMDatatableOptions<T> {
@@ -34,6 +47,12 @@ export interface NgMDatatableOptions<T> {
   >;
   displayedColumns: String[];
   searchMode?: SearchMode;
+  pagination?: {
+    mode?: PaginationMode;
+    pageIndex?: number;
+    pageSize?: number;
+    change?: (e: PageChangeEventPayload) => void;
+  }
   title?: String;
   addButton?: {
     icon: string;
@@ -84,7 +103,7 @@ export interface IconButtonColumn<T> {
   type: "icon-button";
   text: string;
   icon: string;
-  background?:string;
+  background?: string;
   color?: string;
   handler: (data: T) => void;
   disabled?: string;
@@ -114,11 +133,17 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   @Input() options: NgMDatatableOptions<T>;
   @Input() data: Array<T> = [];
 
+  // Extra Paginator Options
+  @Input() dataLength: number = 0;
+  
   dataSource: DataTableDataSource<T>;
   showSpinner = true;
   tableColor: SafeStyle;
   tableBg: SafeStyle;
   searchForm: FormGroup;
+
+  currentPageIndex: number;
+  currentPageSize: number;
 
   constructor(
     fb: FormBuilder,
@@ -131,27 +156,32 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
     });
 
     this.searchForm.valueChanges.subscribe((v) => {
+
+      // reset the page index, when the search or filter select changes
+      this.paginator.pageIndex = 0;
+
       if (
         this.options.searchMode == SearchMode.Default ||
         this.options.searchMode == SearchMode.Local
       ) {
         const filteredData = this.filter(v.search);
 
-        // apply select filter to data source.
-        const filteredSelectData = filteredData.filter((x) =>
-          this.options.filterSelect.filter(x, v.filterSelect)
-        );
-        this.dataSource.data =
-          filteredSelectData.length > 0 ? filteredSelectData : filteredData;
+        if (this.options.filterSelect) {
+          // apply select filter to data source.
+          const filteredSelectData = filteredData.filter((x) =>
+            this.options.filterSelect.filter(x, v.filterSelect)
+          );
+          this.dataSource.data =
+            filteredSelectData.length > 0 ? filteredSelectData : filteredData;
+        }
+        else {
+          this.dataSource.data = filteredData;
+        }
+
       }
 
+      this.cdRef.detectChanges();
       this.paginator._changePageSize(this.paginator.pageSize);
-    });
-
-    this.searchForm.get("filterSelect").valueChanges.subscribe((v) => {
-      if (this.options.filterSelect.mode == SearchMode.Backend) {
-        this.filterChange.emit(v);
-      }
     });
 
     this.searchForm.get("search").valueChanges.subscribe((v) => {
@@ -163,6 +193,31 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
 
   ngOnInit() {
     this.dataSource = new DataTableDataSource<T>(this.data || []);
+
+    // if not set, set default
+    if (!this.options.pagination)
+      this.options.pagination = {
+        mode: PaginationMode.Default,
+        pageIndex: 0,
+        pageSize: 50,
+      };
+
+    if (!this.options.searchMode) {
+      this.options.searchMode = SearchMode.Default;
+    }
+
+    // determine the size of the data.
+    if (this.options.pagination?.mode !== PaginationMode.Backend) {
+      this.dataLength = this.dataSource.data.length;
+    }
+
+    if (this.options.filterSelect) {
+      this.searchForm.get("filterSelect").valueChanges.subscribe((v) => {
+        if (this.options.filterSelect.mode == SearchMode.Backend) {
+          this.filterChange.emit(v);
+        }
+      });
+    }
   }
 
   asAction(c: TextColumn | ActionColumn<T>) {
@@ -172,15 +227,27 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   filter(searchName: string = ""): any {
     return searchName && searchName.trim()
       ? this.data.filter((x) => {
-          for (const key in x) {
-            if (
-              x[key] &&
-              x[key].toString().toLowerCase().includes(searchName.toLowerCase())
-            )
-              return x;
-          }
-        })
+        for (const key in x) {
+          if (
+            x[key] &&
+            x[key].toString().toLowerCase().includes(searchName.toLowerCase())
+          )
+            return x;
+        }
+      })
       : this.data;
+  }
+
+  onPageChange(e: PageChangeEventPayload) {
+
+    if (e.pageIndex == this.currentPageIndex && e.pageSize == this.currentPageSize) {
+      return
+    }
+    else if (this.options.pagination.change)
+      this.options.pagination.change(e)
+
+    this.currentPageIndex = e.pageIndex
+    this.currentPageSize = e.pageSize
   }
 
   ngAfterViewInit() {
@@ -213,9 +280,21 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data && !changes.data.firstChange) {
-      this.dataSource!.data = this.data || [];
+      if (this.options.pagination.mode == PaginationMode.Backend) {
+        const data = this.data;
+        data.unshift(...Array.from(Array(this.paginator.pageIndex * this.paginator.pageSize).keys()).map(x => ({} as any)));
+        data.push(...Array.from(Array(1 * this.paginator.pageSize).keys()).map(x => ({} as any)));
+        this.dataSource.data = data;
+      }
+      else this.dataSource.data = this.data || [];
       this.toggleLoading(false);
+
       this.paginator._changePageSize(this.paginator.pageSize);
+
+      // Change paginator length;
+      if (this.options.pagination.mode !== PaginationMode.Backend) {
+        this.dataLength = this.dataSource.data.length;
+      }
     }
   }
 }

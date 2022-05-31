@@ -152,9 +152,10 @@
   </div>
   <mat-paginator
     #paginator
-    [length]="dataSource?.data.length"
-    [pageIndex]="0"
-    [pageSize]="50"
+    [length]="dataLength"
+    [pageIndex]="this.options.pagination.pageIndex"
+    [pageSize]="this.options.pagination.pageSize"
+    (page)="onPageChange($event)"
     [pageSizeOptions]="[25, 50, 100, 250]"
   >
   </mat-paginator>
