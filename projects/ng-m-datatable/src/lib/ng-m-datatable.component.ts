@@ -135,7 +135,7 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
 
   // Extra Paginator Options
   @Input() dataLength: number = 0;
-  
+
   dataSource: DataTableDataSource<T>;
   showSpinner = true;
   tableColor: SafeStyle;
@@ -282,12 +282,19 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
     if (changes.data && !changes.data.firstChange) {
       if (this.options.pagination.mode == PaginationMode.Backend) {
         const data = this.data;
+
+        // fill next page data so the nexpage button is enabled. Only do it if we have enough data to fill the page.
+        if (this.data.length >= this.paginator.pageSize) {
+          data.push(...Array.from(Array(1 * this.paginator.pageSize).keys()).map(x => ({} as any)));
+        }
+
+        // fill data source with dummy empty data to force the table to render previous pages.
         data.unshift(...Array.from(Array(this.paginator.pageIndex * this.paginator.pageSize).keys()).map(x => ({} as any)));
-        data.push(...Array.from(Array(1 * this.paginator.pageSize).keys()).map(x => ({} as any)));
         this.dataSource.data = data;
       }
       else this.dataSource.data = this.data || [];
       this.toggleLoading(false);
+
 
       this.paginator._changePageSize(this.paginator.pageSize);
 

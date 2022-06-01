@@ -24,6 +24,7 @@ export interface Modelo {
 })
 export class HomeComponent implements OnInit {
   @ViewChild(NgMDatatable) DataTable: NgMDatatable<Modelo>;
+  dataLength = 0;
   dataTableOptions: NgMDatatableOptions<Modelo> = {
     pagination: {
       mode: PaginationMode.Backend,
@@ -2355,6 +2356,7 @@ export class HomeComponent implements OnInit {
         },
       ];
       this.data = this.rawData.slice(0, this.dataTableOptions.pagination.pageSize);
+      this.dataLength = this.rawData.length;
       console.log(this.data);
 
     }, 3000);
