@@ -137,7 +137,7 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
   @Input() dataLength: number = 0;
 
   dataSource: DataTableDataSource<T>;
-  showSpinner = true;
+  @Input() showSpinner = true;
   tableColor: SafeStyle;
   tableBg: SafeStyle;
   searchForm: FormGroup;
@@ -266,16 +266,8 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
       window.getComputedStyle(document.querySelector(".mat-header-cell")).color
     );
 
+    if (this.data.length > 0) this.showSpinner = false;
     this.cdRef.detectChanges();
-
-    if (this.data.length > 0) this.toggleLoading(false);
-  }
-
-  toggleLoading(v: boolean) {
-    this.showSpinner = v;
-    const el = document.querySelector("#loading");
-    if (el)
-      el.setAttribute("style", `border-color : ${this.tableColor} !important;`);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -293,7 +285,6 @@ export class NgMDatatable<T> implements OnInit, OnChanges, AfterViewInit {
         this.dataSource.data = data;
       }
       else this.dataSource.data = this.data || [];
-      this.toggleLoading(false);
 
 
       this.paginator._changePageSize(this.paginator.pageSize);
