@@ -135,7 +135,7 @@
       mat-header-row
       *matHeaderRowDef="options?.displayedColumns"
     ></tr>
-    <tr mat-row *matRowDef="let row; columns: options?.displayedColumns"></tr>
+    <tr [hidden]="showSpinner" mat-row *matRowDef="let row; columns: options?.displayedColumns"></tr>
   </table>
   <div *ngIf="dataSource.data.length < 1 && !showSpinner" class="">
     <h3 style="text-align: center">No elements</h3>

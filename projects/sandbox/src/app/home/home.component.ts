@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
 import {
   NgMDatatable,
   NgMDatatableOptions,
@@ -22,7 +22,7 @@ export interface Modelo {
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements AfterViewInit {
   @ViewChild(NgMDatatable) DataTable: NgMDatatable<Modelo>;
   dataLength = 0;
   dataTableOptions: NgMDatatableOptions<Modelo> = {
@@ -106,8 +106,18 @@ export class HomeComponent implements OnInit {
   rawData: Modelo[] = [];
   data: Modelo[] = [];
   filteredData: Modelo[] = [];
+  showSpinner = false;
 
-  ngOnInit() {
+  constructor(private cdRef: ChangeDetectorRef) {
+  }
+
+  ngAfterViewInit() {
+    this.getData()
+  }
+
+  getData(){
+    this.data = []
+    this.showSpinner = true
     setTimeout(() => {
       this.rawData = [
         {
@@ -2355,10 +2365,13 @@ export class HomeComponent implements OnInit {
           address: "867 Locust Avenue, Finderne, Alaska, 5425",
         },
       ];
+      this.showSpinner = false;
       this.data = this.rawData.slice(0, this.dataTableOptions.pagination.pageSize);
       this.dataLength = this.rawData.length;
       console.log(this.data);
 
     }, 3000);
+    this.cdRef.detectChanges()
+
   }
 }
